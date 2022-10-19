@@ -12,21 +12,15 @@ public class Main {
     public static void printBytes(double digit) {
         if (digit < 0) return;
 
-        int i = 0;
-        String measure;
+        int i = -1;
+        String[] measures = {"KB", "MB", "GB", "TB"};
 
-        while (digit >= 1024){
+        while (digit >= 1024 & i < 3){
             digit /= 1024;
             i++;
         }
 
-        if (i == 1) measure = "KB";
-        else if (i == 2) measure = "MB";
-        else if (i == 3) measure = "GB";
-        else if (i == 4) measure = "TB";
-        else measure = "B";
-
-        System.out.printf("%.1f %s\n", digit, measure);
+        System.out.printf("%.1f %s\n", digit, measures[i]);
     }
 
 }
