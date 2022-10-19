@@ -15,7 +15,7 @@ public class Main {
         int i = -1;
         String[] measures = {"KB", "MB", "GB", "TB"};
 
-        while (digit >= 1024 & i < 3){
+        while (digit >= 1024 & i < measures.length - 1){
             digit /= 1024;
             i++;
         }
