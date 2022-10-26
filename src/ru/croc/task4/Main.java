@@ -10,9 +10,9 @@ public class Main {
         String source = "/*\n" +
                 " * My first ever program in Java!\n" +
                 " */\n" +
-                "class Hello { // class body starts here \n" +
+                "class Hello { //class body starts// here \n" +
                 "  \n" +
-                "  /* main method */\n" +
+                "  /* //main //method// */\n" +
                 "  public static void main(String[] args/* we put command line arguments here*/) {\n" +
                 "    // this line prints my first greeting to the screen\n" +
                 "    System.out.println(\"Hi!\"); // :)\n" +
@@ -25,8 +25,8 @@ public class Main {
 
     static String removeJavaComments(String source){
         while (source.contains("//") || (source.contains("/*") && source.contains("*/"))){
-            source = source.replaceAll("//.*", "");
             source = source.replaceAll("/\\*[\\S\\s]+?\\*/", "");
+            source = source.replaceAll("//.*", "");
         }
         return source;
     }
