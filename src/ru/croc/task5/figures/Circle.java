@@ -5,8 +5,7 @@ public class Circle extends Figure {
     private int y0;
     private int r;
 
-    public Circle(String label, int x0, int y0, int r) {
-        super(label);
+    public Circle(int x0, int y0, int r) {
         this.x0 = x0;
         this.y0 = y0;
         this.r = r;
@@ -16,7 +15,6 @@ public class Circle extends Figure {
     public String toString() {
         return "C " +
                 "(" + x0 + ", " +
-                y0 + ") " + r + ": " +
-                label + "\n";
+                y0 + "), " + r;
     }
 }

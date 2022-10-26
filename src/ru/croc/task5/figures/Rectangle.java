@@ -6,8 +6,7 @@ public class Rectangle extends Figure {
     private int x1;
     private int y1;
 
-    public Rectangle(String label, int x0, int y0, int x1, int y1) {
-        super(label);
+    public Rectangle(int x0, int y0, int x1, int y1) {
         this.x0 = x0;
         this.y0 = y0;
         this.x1 = x1;
@@ -20,7 +19,6 @@ public class Rectangle extends Figure {
                 "(" + x0 + ", "
                 + y0 + ")"+
                 " (" + x1 + ", "
-                + y1 + "): "+
-                label + "\n";
+                + y1 + ")";
     }
 }
