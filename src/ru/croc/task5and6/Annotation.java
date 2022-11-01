@@ -1,6 +1,6 @@
-package ru.croc.task5;
+package ru.croc.task5and6;
 
-import ru.croc.task5.figures.Figure;
+import ru.croc.task5and6.figures.Figure;
 
 public class Annotation {
     private Figure figure;
@@ -14,5 +14,13 @@ public class Annotation {
     @Override
     public String toString() {
         return figure + ": " + label;
+    }
+
+    public Figure getFigure() {
+        return figure;
+    }
+
+    public boolean containsStr(String enteredStr){
+        return label.contains(enteredStr);
     }
 }
