@@ -1,6 +1,6 @@
 package ru.croc.task5and6.figures;
 
-public class Circle extends Figure implements Movable{
+public class Circle extends Figure {
     private int x0;
     private int y0;
     private int r;

@@ -1,6 +1,6 @@
 package ru.croc.task5and6.figures;
 
-public class Rectangle extends Figure implements Movable{
+public class Rectangle extends Figure{
     private int x0;
     private int y0;
     private int x1;

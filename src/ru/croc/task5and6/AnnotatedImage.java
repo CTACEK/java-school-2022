@@ -25,14 +25,14 @@ class AnnotatedImage {
         for (Annotation annotation: annotations) {
             if (annotation.getFigure().inFigure(x,y)) return annotation;
         }
-        return new Annotation(new Circle(-1,-1, 0),"None");
+        return null;
     }
 
     public Annotation findByLabel(String label){
         for (Annotation annotation: annotations) {
             if (annotation.containsStr(label)) return annotation;
         }
-        return new Annotation(new Circle(-1,-1, 0),"None");
+        return null;
     }
 }
 
