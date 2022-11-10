@@ -2,7 +2,6 @@ package ru.croc.task8;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -16,14 +15,16 @@ public class Main {
 
         int n = 0;
 
-        try (Scanner s = new Scanner(new FileReader(args[0]))) {
-            while (s.hasNextLine()) n += s.nextLine().split("\s+").length;
+        try (Scanner scanner = new Scanner(new FileReader(args[0]))) {
+            while (scanner.hasNextLine()) {
+                String s = scanner.nextLine();
+                if (!s.isEmpty()) n += s.split("\s+").length;
+            }
+            System.out.println(n);
         }
-        catch(IOException e){
+        catch(FileNotFoundException e){
             System.out.println(e.getMessage());
+            System.exit(1);
         }
-
-        System.out.println(n);
     }
-
 }
