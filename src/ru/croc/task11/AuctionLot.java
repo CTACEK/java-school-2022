@@ -14,7 +14,7 @@ public class AuctionLot {
     }
 
     public void setActualPrice(BigDecimal actualPrice, String lastPersonName) {
-        if (this.actualPrice.doubleValue() < actualPrice.doubleValue() && LocalDateTime.now().isBefore(dateTimeEnd)) {
+        if (this.actualPrice.compareTo(actualPrice) < 0 && LocalDateTime.now().isBefore(dateTimeEnd)) {
             this.actualPrice = actualPrice;
             this.lastPersonName = lastPersonName;
         }
