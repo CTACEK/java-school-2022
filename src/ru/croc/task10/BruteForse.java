@@ -8,8 +8,7 @@ public class BruteForse implements Callable {
     private static final char[] HEX_DIGITS = "0123456789ABCDEF".toCharArray();
     private final long start;
     private final String hashPass;
-    private final long end = (long) Math.pow(26, 7);
-
+    private final static long end = (long) Math.pow(26, 7);
     private final int step;
 
     private static final int ALPHABET = 26;

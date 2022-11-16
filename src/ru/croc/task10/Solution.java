@@ -23,12 +23,11 @@ public class Solution {
 
         for (Future<String> task : tasks) {
             if (task.get() != null) {
-                service.shutdownNow();
                 result = task.get();
                 break;
             }
         }
-        service.shutdown();
+        service.shutdownNow();
 
         return result;
     }
