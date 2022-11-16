@@ -1,13 +1,11 @@
 package ru.croc.task10;
 
-import ru.croc.task10.tests.PasswordHashTest;
-
 import java.util.concurrent.ExecutionException;
 
 public class Main {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        String str = PasswordHashTest.hashPassword("baaaaaa");
+//        String str = PasswordHashTest.hashPassword("baaaaaa");
 
-        System.out.println(Solution.calculatePassword(5, str));
+        System.out.println(Solution.calculatePassword(5, "40682260CC011947FC2D0B1A927138C5"));
     }
 }
