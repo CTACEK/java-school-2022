@@ -20,5 +20,6 @@ public class Main {
 
         netflix.addUserInHistory(line);
         System.out.println(netflix.getRecommendation(netflix.getMaxId()));
+
     }
 }

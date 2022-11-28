@@ -9,19 +9,16 @@ public class MyBlackListFilter implements BlackListFilter {
         List<String> oldComments = List.copyOf(comments);
         comments.clear();
 
-        boolean flag;
-
         for (String oldComment : oldComments) {
-            flag = true;
             String[] wordsOfOldComment = oldComment.split("[{.,!?\\s]+");
-
-            for (String word : wordsOfOldComment) {
-                if (blackList.contains(word.toLowerCase())) {
-                    flag = false;
-                    break;
-                }
-            }
-            if (flag) comments.add(oldComment);
+            if (!wordsContainsInBlackList(wordsOfOldComment, blackList)) comments.add(oldComment);
         }
+    }
+
+    public boolean wordsContainsInBlackList(String[] words, Set<String> blackList){
+        for (String word : words) {
+            if (blackList.contains(word.toLowerCase())) return true;
+        }
+        return false;
     }
 }
