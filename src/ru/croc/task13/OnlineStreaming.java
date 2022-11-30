@@ -7,76 +7,59 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class OnlineStreaming {
-    private Map<Integer, String> films;
-    private Map<Integer, List<Integer>> history;
+    private final Map<Integer, String> films;
+    private final Map<Integer, List<Integer>> history;
+
     private Integer maxId;
 
     public OnlineStreaming(Path db_films, Path db_history) {
-        films = Parser.pasreFilms(db_films);
-        history = Parser.pasreHistory(db_history);
+        films = Parser.pasreDbFilms(db_films);
+        history = Parser.pasreDbHistory(db_history);
         maxId = Collections.max(history.keySet());
     }
 
     public void addUserInHistory(String newHistory){
-        int max = Collections.max(history.keySet());
-        max++;
-
-        Integer newId = max;
-        this.maxId = max;
-        history.put(newId, Parser.pasreHistory(newHistory));
+        maxId++;
+        history.put(maxId, Parser.pasreEnteredHistory(newHistory));
     }
 
-    public Integer getMaxId() {
-        return maxId;
-    }
 
-    private boolean isCompatibility(Integer keySupposedUser, Integer keyCurrentUser) throws UserNotFoundException {
+    private boolean isCompatibility(Integer keySupposedUser, Integer keyCurrentUser) {
         /*
         Для просмотров пользователя из историй по всем пользователям выбираются те,
         у которых хотя бы половина фильмов совпадает с заданной.
          */
 
-        if (!history.containsKey(keyCurrentUser)) throw new UserNotFoundException(keyCurrentUser);
-        if (!history.containsKey(keySupposedUser)) throw new UserNotFoundException(keySupposedUser);
-
-        Map<Integer, Integer> countFilms = new HashMap<>();
         List<Integer> filmsCurrentUser = history.get(keyCurrentUser);
+        List<Integer> temp = history.get(keySupposedUser);
+
         int countCompatibilityFilms = 0;
 
-        for (Integer idFilm : filmsCurrentUser) { // Инициализация словаря количества фильмов
-            if (!countFilms.containsKey(idFilm)) countFilms.put(idFilm, 0);
-        }
+        Set<Integer> userFilms = new HashSet<>(temp);
 
-        Integer tempCountFilms;
-
-        for (Integer idFilmSupposed : history.get(keySupposedUser)) { // Подсчёт количества фильмов
-            if (countFilms.containsKey(idFilmSupposed)) {
-                tempCountFilms = countFilms.get(idFilmSupposed);
-                tempCountFilms++;
-                countFilms.put(idFilmSupposed, tempCountFilms);
+        for (Integer idFilm : userFilms) {
+            if (filmsCurrentUser.contains(idFilm)) {
+                countCompatibilityFilms++;
             }
         }
 
-        for (Integer value : countFilms.values()) {
-            countCompatibilityFilms += value;
-        }
-
-        return countCompatibilityFilms > history.get(keyCurrentUser).size() / 2;
+        return countCompatibilityFilms >= userFilms.size() / 2;
     }
 
-    private Set<Integer> getIdsRecommendedFilms(Integer idCurrentUser) throws UserNotFoundException {
+    private Set<Integer> getIdsRecommendedFilms(Integer idCurrentUser) {
         /*
         Из отобранных списков исключаются все, которые пользователь уже посмотрел.
         */
         Set<Integer> idRecommendedFilms = new HashSet<>();
 
         for (Integer keyUser : history.keySet()) {
-            if (isCompatibility(keyUser, idCurrentUser) && !Objects.equals(keyUser, idCurrentUser)) {
+            if (!Objects.equals(keyUser, idCurrentUser) && isCompatibility(keyUser, idCurrentUser)) {
                 for (Integer idFilm : history.get(keyUser)) {
                     if (!history.get(idCurrentUser).contains(idFilm)) idRecommendedFilms.add(idFilm);
                 }
             }
         }
+
         return idRecommendedFilms;
     }
 
@@ -87,25 +70,38 @@ public class OnlineStreaming {
         сервиса и фильм с максимальным числом просмотров выбирается как рекомендация
         (если таких фильмов оказалось несколько, выбирается любой из них).
          */
+
         if (!history.containsKey(idUser)) throw new UserNotFoundException(idUser);
-
-        Map<Integer, Integer> rating = new HashMap<>();
-
-        Integer maxRating = 0;
 
         Set<Integer> keysOfFilms = getIdsRecommendedFilms(idUser);
 
-        for (Integer idFilm : keysOfFilms) { // Инициализация словаря количества фильмов
-            Integer counter = rating.get(idFilm);
-            if (counter == null) counter = 0;
-            counter++;
-            if (counter > maxRating) maxRating = counter;
-            rating.put(idFilm, counter);
+        Map<Integer, Integer> rating = new HashMap<>();
+
+        for (Integer keyOfFilm : keysOfFilms) {
+            rating.put(keyOfFilm, 0);
+        }
+
+        Integer maxRating = 0;
+
+        for (Integer user : history.keySet()) {
+            List<Integer> userFilms = history.get(user);
+            for (Integer userFilm : userFilms) {
+                Integer tempFilm = rating.get(userFilm);
+                if (tempFilm != null){
+                    tempFilm++;
+                    if (tempFilm > maxRating) maxRating = tempFilm;
+                    rating.put(userFilm, tempFilm);
+                }
+            }
         }
 
         for (Integer key : rating.keySet()) {
             if (Objects.equals(rating.get(key), maxRating)) return films.get(key);
         }
         return null;
+    }
+
+    public Integer getMaxId() {
+        return maxId;
     }
 }

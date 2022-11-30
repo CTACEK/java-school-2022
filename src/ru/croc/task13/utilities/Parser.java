@@ -9,15 +9,15 @@ public class Parser {
 
     final static private String regex = ",";
 
-    static public List<Integer> pasreHistory(String newHistory){
+    static public List<Integer> pasreEnteredHistory(String history){
         List<Integer> integerList = new ArrayList<>();
-        String[] strings = newHistory.split(regex);
+        String[] strings = history.split(regex);
         for (String string : strings) {
             integerList.add(Integer.parseInt(string));
         }
         return integerList;
     }
-    static public Map<Integer, String> pasreFilms(Path path){
+    static public Map<Integer, String> pasreDbFilms(Path path){
         Map<Integer, String> films = new HashMap<>();
 
         try (Scanner scanner = new Scanner(new FileReader(path.toFile()))) {
@@ -33,7 +33,7 @@ public class Parser {
         return films;
     }
 
-    static public Map<Integer, List<Integer>> pasreHistory(Path path) throws NumberFormatException{
+    static public Map<Integer, List<Integer>> pasreDbHistory(Path path) throws NumberFormatException{
         Map<Integer, List<Integer>> history = new HashMap<>();
         int id_person = 100;
 
