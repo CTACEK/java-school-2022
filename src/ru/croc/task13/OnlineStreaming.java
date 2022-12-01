@@ -31,11 +31,11 @@ public class OnlineStreaming {
          */
 
         List<Integer> filmsCurrentUser = history.get(keyCurrentUser);
-        List<Integer> temp = history.get(keySupposedUser);
+        List<Integer> filmsSupposedUser = history.get(keySupposedUser);
 
         int countCompatibilityFilms = 0;
 
-        Set<Integer> userFilms = new HashSet<>(temp);
+        Set<Integer> userFilms = new HashSet<>(filmsSupposedUser);
 
         for (Integer idFilm : userFilms) {
             if (filmsCurrentUser.contains(idFilm)) {

@@ -28,7 +28,7 @@ public class Parser {
             }
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
-            System.exit(1);
+            throw new RuntimeException();
         }
         return films;
     }
