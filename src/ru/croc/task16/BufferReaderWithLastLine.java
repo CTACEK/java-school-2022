@@ -11,9 +11,12 @@ public class BufferReaderWithLastLine {
         this.bufferedReader = bufferedReader;
     }
 
-    public String readLine() throws IOException {
+    public void readLine() throws IOException {
         lastLine = bufferedReader.readLine();
-        return lastLine;
+    }
+
+    public BufferedReader getBufferedReader() {
+        return bufferedReader;
     }
 
     public String getLastLine() {

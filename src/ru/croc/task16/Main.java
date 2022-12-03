@@ -14,21 +14,12 @@ import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        List<File> filesList = Files.walk(Paths.get("/Users/ctacek/IdeaProjects/java-school-2022/src/ru/croc/task16/dir1"))
-                .filter(Files::isRegularFile)
-                .map(Path::toFile)
-                .collect(Collectors.toList());
-
-        filesList.removeIf(tempFile -> !tempFile.getName().contains(".log") && !tempFile.getName().contains(".trace"));
-
         String dataSplitBy = "\\s";
-        String line;
-        Integer min;
-        int timeLog;
+        String path = "/Users/ctacek/IdeaProjects/java-school-2022/src/ru/croc/task16/dir1";
 
         List<BufferReaderWithLastLine> bufferedReaders = new ArrayList<>();
 
-        for (File file : filesList) {
+        for (File file : takeAllLogAndTraceFiles(path)) {
             bufferedReaders.add(new BufferReaderWithLastLine(new BufferedReader(new FileReader(file))));
         }
 
@@ -37,29 +28,26 @@ public class Main {
             bufferedReader.readLine();
         }
 
-        Iterator<BufferReaderWithLastLine> bufferReaderWithLastLineIterator;
-        BufferReaderWithLastLine tempBufferReadder;
-        BufferReaderWithLastLine minBuffer;
 
         while (!bufferedReaders.isEmpty()) {
             clearListBuffers(bufferedReaders);
             if (bufferedReaders.isEmpty()) break;
 
-            bufferReaderWithLastLineIterator = bufferedReaders.iterator();
+            Iterator<BufferReaderWithLastLine> bufferReaderWithLastLineIterator = bufferedReaders.iterator();
 
-            minBuffer = bufferedReaders.get(0);
-            min = Integer.parseInt(minBuffer.getLastLine().split(dataSplitBy)[0]);
+            BufferReaderWithLastLine minBuffer = bufferedReaders.get(0);
+            long min = Long.parseLong(minBuffer.getLastLine().split(dataSplitBy)[0]);
 
             while (bufferReaderWithLastLineIterator.hasNext()) {
 
-                tempBufferReadder = bufferReaderWithLastLineIterator.next();
-                line = tempBufferReadder.getLastLine();
+                BufferReaderWithLastLine tempBufferReader = bufferReaderWithLastLineIterator.next();
+                String line = tempBufferReader.getLastLine();
                 String[] data = line.split(dataSplitBy);
-                timeLog = Integer.parseInt(data[0]);
+                long timeLog = Integer.parseInt(data[0]);
 
                 if (timeLog < min) {
                     min = timeLog;
-                    minBuffer = tempBufferReadder;
+                    minBuffer = tempBufferReader;
                 }
             }
             System.out.println(minBuffer.getLastLine());
@@ -68,7 +56,27 @@ public class Main {
         }
     }
 
-    static public void clearListBuffers(List<BufferReaderWithLastLine> bufferReaderWithLastLines){
-        bufferReaderWithLastLines.removeIf(tempBuff -> tempBuff.getLastLine() == null);
+    static public void clearListBuffers(List<BufferReaderWithLastLine> bufferReaderWithLastLines) throws IOException {
+
+        Iterator<BufferReaderWithLastLine> bufferReaderWithLastLineIterator = bufferReaderWithLastLines.iterator();
+
+        while (bufferReaderWithLastLineIterator.hasNext()){
+            BufferReaderWithLastLine tempBuff = bufferReaderWithLastLineIterator.next();
+            if (tempBuff.getLastLine() == null) {
+                tempBuff.getBufferedReader().close();
+                bufferReaderWithLastLineIterator.remove();
+            }
+        }
+    }
+
+    static public List<File> takeAllLogAndTraceFiles(String path) throws IOException {
+        List<File> filesList = Files.walk(Paths
+                        .get(path))
+                .filter(Files::isRegularFile)
+                .map(Path::toFile)
+                .collect(Collectors.toList());
+
+        filesList.removeIf(tempFile -> !tempFile.getName().toLowerCase().endsWith(".log") && !tempFile.getName().toLowerCase().endsWith(".trace"));
+        return filesList;
     }
 }
