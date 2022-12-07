@@ -9,11 +9,19 @@ import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        Path path = Path.of("/Users/ctacek/IdeaProjects/java-school-2022/src/ru/croc/task17/test_db.csv");
+
+        Scanner scanner = new Scanner(System.in);
+//        String s = "/Users/ctacek/IdeaProjects/java-school-2022/src/ru/croc/task17and18/test_db.csv";
+
+
+        Path path = Path.of(scanner.nextLine());
         DatabaseWorker shopDbWorker = new DatabaseWorker();
+
+        scanner.close();
 
         shopDbWorker.createTablesAndForeignKeys();
         shopDbWorker.uploadDatabasesFromCsv(path);
