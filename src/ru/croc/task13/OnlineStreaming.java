@@ -18,9 +18,10 @@ public class OnlineStreaming {
         maxId = Collections.max(history.keySet());
     }
 
-    public void addUserInHistory(String newHistory){
+    public int addUserInHistory(String newHistory){
         maxId++;
         history.put(maxId, Parser.pasreEnteredHistory(newHistory));
+        return maxId;
     }
 
 

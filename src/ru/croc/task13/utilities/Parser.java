@@ -51,7 +51,7 @@ public class Parser {
             }
         } catch (FileNotFoundException | NumberFormatException e) {
             System.out.println(e.getMessage());
-            System.exit(1);
+            throw new RuntimeException();
         }
         return history;
     }
